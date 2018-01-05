@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Hello AngularJS</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    	<script type='text/javascript'>
+		
+			angular.module('connect_app', []).controller('userController', userController);
+			
+			
+			function userController($scope, $http) {
+				
+				var data = "";
+				
+				if($scope.firstName != null) data +="firstName=" + $scope.firstName;
+				
+				$http.get('http://localhost:3001/Inquiry/Users?' + data).
+					then(function(response) {
+						var data 	 = response.data;
+						
+						if(data != null) {
+							$scope.users = data;
+						}
+						
+					});
+			
+			}
+		/*	angular.module('demo', [])
+			.controller('Hello', function($scope, $http) {
+				$http.get('http://localhost:3001/Inquiry/Users?firstName=Wunchat').
+					then(function(response) {
+						var data 	 = response.data;
+						
+						if(data != null) {
+							$scope.users = data[0];
+						}
+						
+					});
+			});*/
+		</script>
+	</head>
+	First Name: <input ng-model="firstName" type="text">
+	Last Name: <input ng-model="lastName" type="text">
+	
+	<body ng-app="connect_app">
+		<div ng-controller="userController">
+			<table>
+				<tr>
+					<td> First Name </td>
+					<td> Last Name </td>
+				</tr>
+			
+				<tr ng-repeat='user in users'>
+					<td>{{user.firstName}}</td>
+					<td>{{user.lastName}}</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>
